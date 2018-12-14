@@ -53,36 +53,47 @@ void TextAnalysis::read_text(std::istream& in, const std::string& ignore) {
 }
 
 void TextAnalysis::add_word(const std::string& word, size_t line) {
+    
     std::unordered_map<std::string, std::vector<size_t>> :: iterator it;
     it = wordtable.find(word);
+    //Iterator checks to see if the word has been implemented yet
     if (it != wordtable.end()) {
+        //Adds the value
         wordtable[word].push_back(line);
     } else {
+        //Creates a vector to be added to the word
         wordtable[word] = std::vector<size_t>();
+        //Adds a new value to the vector
         wordtable[word].push_back(line);
     }
 }
 
 size_t TextAnalysis::countWord(const std::string& word) {
+    //Counts all the words within the word table
     return wordtable[word].size();
 }
 
 size_t TextAnalysis::countTwoWords(const std::string& word1, const std::string& word2) {
     size_t count = 0;
     int number = 0;
-    int prev_num = 0;
+    int lastNum = 0;
+    //For loop to go through all the values in the loop
     for (int i = 0; i < wordtable[word1].size(); i++)
     {
+        //Checks to see if a value from word1 equals a value from word2
         number = wordtable[word1][i];
-        prev_num = wordtable[word1][i-1];
+        //Checks previous value in the vector
+        lastNum = wordtable[word1][i-1];
+        //Increments the count if the duplicate was not already counted
         if(std::find(wordtable[word2].begin(), wordtable[word2].end(),number) != wordtable[word2].end())
         {
-            if (prev_num != number)
+            if (lastNum != number)
             {
                 count++;
             }
         }
     }
+    //Returns the value of the two words
     return count;
 }
 
