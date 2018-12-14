@@ -52,18 +52,38 @@ void TextAnalysis::read_text(std::istream& in, const std::string& ignore) {
   }
 }
 
-// TO DO
 void TextAnalysis::add_word(const std::string& word, size_t line) {
-
+    std::unordered_map<std::string, std::vector<size_t>> :: iterator it;
+    it = wordtable.find(word);
+    if (it != wordtable.end()) {
+        wordtable[word].push_back(line);
+    } else {
+        wordtable[word] = std::vector<size_t>();
+        wordtable[word].push_back(line);
+    }
 }
 
-// TO DO
 size_t TextAnalysis::countWord(const std::string& word) {
-  return 9999;
+    return wordtable[word].size();
 }
 
-// TO DO
 size_t TextAnalysis::countTwoWords(const std::string& word1, const std::string& word2) {
-  return 9999;
+    size_t count = 0;
+    int number = 0;
+    int prev_num = 0;
+    for (int i = 0; i < wordtable[word1].size(); i++)
+    {
+        number = wordtable[word1][i];
+        prev_num = wordtable[word1][i-1];
+        if(std::find(wordtable[word2].begin(), wordtable[word2].end(),number) != wordtable[word2].end())
+        {
+            if (prev_num != number)
+            {
+                count++;
+            }
+        }
+    }
+    return count;
 }
+
 
